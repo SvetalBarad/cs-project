@@ -1,0 +1,47 @@
+INTRODUCTION TO CALCULUS
+
+Calculus is a branch of mathematics that studies continuous change and motion. It provides a framework for modeling systems where change is fundamental and for deriving predictions about the behavior of these systems. Calculus consists of two major branches: differential calculus and integral calculus.
+
+Differential Calculus:
+
+Differential calculus concerns rates of change and slopes of curves. Its central concept is the derivative.
+
+The Derivative:
+- Represents the instantaneous rate of change of a function with respect to one of its variables
+- Geometrically, it's the slope of the tangent line to the function's graph at a specific point
+- Notation: f'(x), dy/dx, or d/dx[f(x)]
+
+Basic Differentiation Rules:
+1. Power Rule: d/dx[x^n] = n·x^(n-1)
+2. Product Rule: d/dx[f(x)·g(x)] = f'(x)·g(x) + f(x)·g'(x)
+3. Quotient Rule: d/dx[f(x)/g(x)] = [f'(x)·g(x) - f(x)·g'(x)]/[g(x)]²
+4. Chain Rule: d/dx[f(g(x))] = f'(g(x))·g'(x)
+
+Applications:
+- Finding maximum and minimum values
+- Related rates problems
+- Motion analysis (velocity and acceleration)
+- Optimization problems
+
+Integral Calculus:
+
+Integral calculus concerns accumulation of quantities and areas under curves. Its central concept is the integral.
+
+The Integral:
+- Definite integral: ∫[a,b]f(x)dx represents the area under the curve f(x) from x=a to x=b
+- Indefinite integral: ∫f(x)dx represents the antiderivative of f(x)
+- Fundamental Theorem of Calculus: ∫[a,b]f(x)dx = F(b) - F(a), where F'(x) = f(x)
+
+Basic Integration Rules:
+1. Power Rule: ∫x^n dx = x^(n+1)/(n+1) + C (where n ≠ -1)
+2. Integration by Parts: ∫u(x)v'(x)dx = u(x)v(x) - ∫v(x)u'(x)dx
+3. Substitution Method: ∫f(g(x))g'(x)dx = ∫f(u)du, where u = g(x)
+
+Applications:
+- Area calculation
+- Volume calculation
+- Work done by a force
+- Total change from rate of change
+- Probability distributions
+
+Calculus is foundational to many disciplines, including physics, engineering, economics, statistics, and computer science, providing tools to model and analyze systems that change continuously. 

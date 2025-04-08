@@ -1,0 +1,74 @@
+{
+  "resources": [
+    {
+      "_id": "1",
+      "title": "Introduction to Quantum Physics",
+      "description": "A comprehensive overview of key quantum physics concepts including wave-particle duality, uncertainty principle, and quantum entanglement.",
+      "filename": "quantum_physics.pdf",
+      "filetype": "application/pdf",
+      "filesize": 47390,
+      "uploadedBy": {
+        "name": "Physics Teacher",
+        "email": "teacher@example.com"
+      },
+      "createdAt": "2025-04-08T01:30:00.000Z",
+      "updatedAt": "2025-04-08T01:30:00.000Z"
+    },
+    {
+      "_id": "2",
+      "title": "Fundamentals of Thermodynamics",
+      "description": "Detailed explanation of the four laws of thermodynamics and their applications in various fields of science and engineering.",
+      "filename": "thermodynamics.pdf",
+      "filetype": "application/pdf",
+      "filesize": 51075,
+      "uploadedBy": {
+        "name": "Physics Teacher",
+        "email": "teacher@example.com"
+      },
+      "createdAt": "2025-04-08T01:30:00.000Z",
+      "updatedAt": "2025-04-08T01:30:00.000Z"
+    },
+    {
+      "_id": "3",
+      "title": "Introduction to Calculus",
+      "description": "Basic concepts of differential and integral calculus with examples and applications in physics and engineering.",
+      "filename": "calculus_basics.pdf",
+      "filetype": "application/pdf",
+      "filesize": 49965,
+      "uploadedBy": {
+        "name": "Math Professor",
+        "email": "math@example.com"
+      },
+      "createdAt": "2025-04-08T01:29:00.000Z",
+      "updatedAt": "2025-04-08T01:29:00.000Z"
+    },
+    {
+      "_id": "4",
+      "title": "Electromagnetism Principles",
+      "description": "Fundamental principles of electricity and magnetism, Maxwell's equations, and their applications in modern technology.",
+      "filename": "electromagnetism.pdf",
+      "filetype": "application/pdf",
+      "filesize": 52340,
+      "uploadedBy": {
+        "name": "Physics Teacher",
+        "email": "teacher@example.com"
+      },
+      "createdAt": "2025-04-08T01:35:00.000Z",
+      "updatedAt": "2025-04-08T01:35:00.000Z"
+    },
+    {
+      "_id": "5",
+      "title": "Introduction to Statistical Mechanics",
+      "description": "The mathematical framework that connects the microscopic properties of atoms and molecules to the macroscopic properties of materials.",
+      "filename": "statistical_mechanics.pdf",
+      "filetype": "application/pdf",
+      "filesize": 48560,
+      "uploadedBy": {
+        "name": "Physics Teacher",
+        "email": "teacher@example.com"
+      },
+      "createdAt": "2025-04-08T01:40:00.000Z",
+      "updatedAt": "2025-04-08T01:40:00.000Z"
+    }
+  ]
+} 

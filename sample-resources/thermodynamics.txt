@@ -1,0 +1,46 @@
+FUNDAMENTALS OF THERMODYNAMICS
+
+Thermodynamics is the branch of physics that deals with heat, work, and temperature, and their relation to energy, entropy, and the physical properties of matter and radiation. The behavior of these quantities is governed by the four laws of thermodynamics.
+
+The Four Laws of Thermodynamics:
+
+Zeroth Law: If two systems are each in thermal equilibrium with a third system, they are in thermal equilibrium with each other.
+- This law establishes temperature as a fundamental and measurable property
+- It allows for the creation of temperature scales and thermometers
+
+First Law: Energy cannot be created or destroyed in an isolated system; it can only change forms.
+- Also known as the law of conservation of energy
+- Mathematically expressed as ΔU = Q - W
+  where ΔU is the change in internal energy, Q is heat added to the system, and W is work done by the system
+
+Second Law: The entropy of any isolated system always increases over time.
+- Heat flows spontaneously from hot to cold objects, but not vice versa
+- It is impossible to convert heat completely into work without some heat being wasted
+- Entropy (disorder) of a closed system will always increase or remain constant
+
+Third Law: As the temperature approaches absolute zero, the entropy of a perfect crystal approaches zero.
+- It is impossible to reach absolute zero in a finite number of steps
+- This law provides an absolute reference point for entropy determination
+
+Key Thermodynamic Concepts:
+
+1. Enthalpy (H): A measure of the total heat content of a system
+   H = U + PV (internal energy + pressure × volume)
+
+2. Entropy (S): A measure of the disorder or randomness in a system
+   dS = dQ/T (for reversible processes)
+
+3. Gibbs Free Energy (G): The maximum amount of non-expansion work available from a system
+   G = H - TS
+
+4. Heat Capacity: The amount of heat required to raise the temperature of a substance by one degree
+
+Applications of Thermodynamics:
+
+- Engineering of engines and refrigeration systems
+- Power generation in thermal and nuclear plants
+- Chemical reactions and processes
+- Climate science and meteorology
+- Biological systems and metabolism
+
+Thermodynamics plays a crucial role in understanding energy transformations in our universe and has profound implications for technology, engineering, and the fundamental limits of physical processes. 

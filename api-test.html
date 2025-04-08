@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduLearn API Tester</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #2c3e50;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 10px;
+    }
+    .section {
+      background-color: #f7f9fc;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-right: 10px;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    #response {
+      min-height: 100px;
+      background-color: #2c3e50;
+      color: #ecf0f1;
+      padding: 15px;
+      border-radius: 4px;
+      overflow-x: auto;
+      font-family: monospace;
+      white-space: pre;
+    }
+    .token-display {
+      margin: 10px 0;
+      padding: 10px;
+      background-color: #f1f1f1;
+      border-radius: 4px;
+      word-break: break-all;
+      font-family: monospace;
+    }
+    .resource-list {
+      list-style: none;
+      padding: 0;
+    }
+    .resource-item {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>EduLearn API Tester</h1>
+  
+  <div class="section">
+    <h2>Authentication</h2>
+    
+    <div>
+      <h3>Register</h3>
+      <label for="reg-name">Name:</label>
+      <input type="text" id="reg-name" value="Test User">
+      
+      <label for="reg-email">Email:</label>
+      <input type="email" id="reg-email" value="test@example.com">
+      
+      <label for="reg-password">Password:</label>
+      <input type="password" id="reg-password" value="Password123!">
+      
+      <button onclick="register()">Register</button>
+    </div>
+    
+    <div>
+      <h3>Login</h3>
+      <label for="login-email">Email:</label>
+      <input type="email" id="login-email" value="test@example.com">
+      
+      <label for="login-password">Password:</label>
+      <input type="password" id="login-password" value="Password123!">
+      
+      <button onclick="login()">Login</button>
+    </div>
+    
+    <div>
+      <h3>Current User</h3>
+      <button onclick="getCurrentUser()">Get Current User</button>
+    </div>
+    
+    <div>
+      <h3>Auth Token</h3>
+      <div id="token" class="token-display">No token</div>
+    </div>
+  </div>
+  
+  <div class="section">
+    <h2>Notes Management</h2>
+    
+    <div>
+      <h3>Upload Note</h3>
+      <label for="note-title">Title:</label>
+      <input type="text" id="note-title" value="Test Note">
+      
+      <label for="note-description">Description:</label>
+      <textarea id="note-description" rows="3">This is a test note uploaded from the API tester.</textarea>
+      
+      <label for="note-file">File:</label>
+      <input type="file" id="note-file">
+      
+      <button onclick="uploadNote()">Upload Note</button>
+    </div>
+    
+    <div>
+      <h3>Get Resources</h3>
+      <button onclick="getResources()">Get All Resources</button>
+      <button onclick="getMyNotes()">Get My Notes</button>
+      
+      <div id="resources-container">
+        <h4>Resources</h4>
+        <ul id="resources-list" class="resource-list"></ul>
+      </div>
+    </div>
+  </div>
+  
+  <div class="section">
+    <h2>API Response</h2>
+    <div id="response">No response yet...</div>
+  </div>
+
+  <script>
+    const API_URL = 'http://localhost:5000';
+    let authToken = localStorage.getItem('edulearn_token') || null;
+    let selectedNoteId = null;
+
+    // Update token display
+    function updateTokenDisplay() {
+      const tokenElement = document.getElementById('token');
+      tokenElement.textContent = authToken || 'No token';
+      if (authToken) {
+        localStorage.setItem('edulearn_token', authToken);
+      } else {
+        localStorage.removeItem('edulearn_token');
+      }
+    }
+
+    // Display response
+    function displayResponse(data) {
+      const responseElement = document.getElementById('response');
+      responseElement.textContent = JSON.stringify(data, null, 2);
+    }
+
+    // Register a new user
+    async function register() {
+      const name = document.getElementById('reg-name').value;
+      const email = document.getElementById('reg-email').value;
+      const password = document.getElementById('reg-password').value;
+
+      try {
+        const response = await fetch(`${API_URL}/auth/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ name, email, password })
+        });
+
+        const data = await response.json();
+        displayResponse(data);
+
+        if (data.token) {
+          authToken = data.token;
+          updateTokenDisplay();
+        }
+      } catch (error) {
+        displayResponse({ error: error.message });
+      }
+    }
+
+    // Login
+    async function login() {
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+
+      try {
+        const response = await fetch(`${API_URL}/auth/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+        displayResponse(data);
+
+        if (data.token) {
+          authToken = data.token;
+          updateTokenDisplay();
+        }
+      } catch (error) {
+        displayResponse({ error: error.message });
+      }
+    }
+
+    // Get current user
+    async function getCurrentUser() {
+      if (!authToken) {
+        displayResponse({ error: 'No auth token. Please login first.' });
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_URL}/auth/me`, {
+          headers: {
+            'Authorization': `Bearer ${authToken}`
+          }
+        });
+
+        const data = await response.json();
+        displayResponse(data);
+      } catch (error) {
+        displayResponse({ error: error.message });
+      }
+    }
+
+    // Upload note
+    async function uploadNote() {
+      if (!authToken) {
+        displayResponse({ error: 'No auth token. Please login first.' });
+        return;
+      }
+
+      const title = document.getElementById('note-title').value;
+      const description = document.getElementById('note-description').value;
+      const fileInput = document.getElementById('note-file');
+      
+      if (!fileInput.files || fileInput.files.length === 0) {
+        displayResponse({ error: 'Please select a file to upload.' });
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('description', description);
+      formData.append('file', fileInput.files[0]);
+
+      try {
+        const response = await fetch(`${API_URL}/upload`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${authToken}`
+          },
+          body: formData
+        });
+
+        const data = await response.json();
+        displayResponse(data);
+        
+        if (data.success) {
+          // Refresh resources after upload
+          getResources();
+        }
+      } catch (error) {
+        displayResponse({ error: error.message });
+      }
+    }
+
+    // Get all resources
+    async function getResources() {
+      try {
+        const response = await fetch(`${API_URL}/resources`);
+        const data = await response.json();
+        
+        displayResponse(data);
+        displayResources(data.data || []);
+      } catch (error) {
+        displayResponse({ error: error.message });
+      }
+    }
+
+    // Get my notes
+    async function getMyNotes() {
+      if (!authToken) {
+        displayResponse({ error: 'No auth token. Please login first.' });
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_URL}/my-notes`, {
+          headers: {
+            'Authorization': `Bearer ${authToken}`
+          }
+        });
+        
+        const data = await response.json();
+        displayResponse(data);
+        displayResources(data.data || []);
+      } catch (error) {
+        displayResponse({ error: error.message });
+      }
+    }
+
+    // Download a note
+    function downloadNote(noteId) {
+      window.open(`${API_URL}/download/${noteId}`);
+    }
+
+    // Delete a note
+    async function deleteNote(noteId) {
+      if (!authToken) {
+        displayResponse({ error: 'No auth token. Please login first.' });
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_URL}/resources/${noteId}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${authToken}`
+          }
+        });
+        
+        const data = await response.json();
+        displayResponse(data);
+        
+        if (data.success) {
+          // Refresh resources after deletion
+          getResources();
+        }
+      } catch (error) {
+        displayResponse({ error: error.message });
+      }
+    }
+
+    // Display resources in the list
+    function displayResources(resources) {
+      const resourcesList = document.getElementById('resources-list');
+      resourcesList.innerHTML = '';
+
+      if (resources.length === 0) {
+        resourcesList.innerHTML = '<li>No resources found</li>';
+        return;
+      }
+
+      resources.forEach(resource => {
+        const li = document.createElement('li');
+        li.className = 'resource-item';
+        
+        const uploadedBy = resource.uploadedBy ? 
+          (typeof resource.uploadedBy === 'object' ? resource.uploadedBy.name : resource.uploadedBy) : 
+          'Unknown';
+        
+        li.innerHTML = `
+          <h4>${resource.title}</h4>
+          <p>${resource.description || 'No description'}</p>
+          <p><strong>File:</strong> ${resource.filename} (${formatFileSize(resource.filesize)})</p>
+          <p><strong>Uploaded by:</strong> ${uploadedBy}</p>
+          <button onclick="downloadNote('${resource._id}')">Download</button>
+          <button onclick="deleteNote('${resource._id}')">Delete</button>
+        `;
+        
+        resourcesList.appendChild(li);
+      });
+    }
+
+    // Format file size
+    function formatFileSize(bytes) {
+      if (bytes < 1024) return bytes + ' bytes';
+      else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+      else return (bytes / 1048576).toFixed(1) + ' MB';
+    }
+
+    // Initialize token display
+    updateTokenDisplay();
+  </script>
+</body>
+</html> 

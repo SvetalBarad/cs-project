@@ -1,0 +1,38 @@
+INTRODUCTION TO QUANTUM PHYSICS
+
+Quantum physics, also known as quantum mechanics, is a fundamental theory in physics that describes the behavior of matter and energy at the atomic and subatomic scales. It forms the basis of our understanding of the physical properties of nature at the smallest scales.
+
+Key Concepts:
+
+1. Wave-Particle Duality
+   - Light and matter can display characteristics of both waves and particles
+   - Demonstrated by the double-slit experiment
+   - Described mathematically by the wave function
+
+2. Quantum Uncertainty
+   - Heisenberg's Uncertainty Principle states that we cannot simultaneously know both the position and momentum of a particle with perfect precision
+   - The more precisely we measure position, the less precisely we can know momentum, and vice versa
+
+3. Quantization
+   - Energy levels in atoms are discrete, not continuous
+   - Electrons can only exist in specific energy states
+   - When electrons transition between energy levels, they absorb or emit photons with precise energies
+
+4. Quantum Superposition
+   - Quantum systems can exist in multiple states simultaneously
+   - Only when measured does the system "choose" a specific state
+   - Schrödinger's cat thought experiment illustrates this concept
+
+5. Quantum Entanglement
+   - Two particles can become "entangled" such that the quantum state of each particle cannot be described independently
+   - Measuring one particle instantaneously affects the other, regardless of distance
+
+Applications of Quantum Physics:
+
+- Electronics and computer technology
+- Lasers and optical technologies
+- Medical imaging (MRI)
+- Quantum computing
+- Cryptography
+
+Quantum physics continues to challenge our intuitive understanding of reality while providing the foundation for many modern technologies we use daily. 

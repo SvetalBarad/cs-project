@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Platform - Home</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
+            --text-color: #333;
+            --light-text: #f8f9fa;
+            --background-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+            --hover-color: #e9ecef;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-login {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .btn-login:hover {
+            background-color: var(--hover-color);
+        }
+
+        .btn-signup {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+        }
+
+        .btn-signup:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            z-index: 1000;
+        }
+
+        .logo h1 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin: 0 15px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            position: relative;
+            padding: 5px 0;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* Side Navigation Styles */
+        .side-nav {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100vh;
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+            z-index: 1001;
+            transition: transform 0.3s ease-in-out;
+            padding: 2rem 1rem;
+        }
+
+        .side-nav.active {
+            transform: translateX(280px);
+        }
+
+        .side-nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .side-nav-header h2 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .close-nav {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+
+        .side-nav-links {
+            list-style: none;
+        }
+
+        .side-nav-links li {
+            margin-bottom: 1rem;
+        }
+
+        .side-nav-links a {
+            display: block;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+
+        .side-nav-links a:hover,
+        .side-nav-links a.active {
+            background-color: var(--hover-color);
+            color: var(--primary-color);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 1002;
+        }
+
+        .hamburger .bar {
+            width: 100%;
+            height: 3px;
+            background-color: var(--text-color);
+            transition: var(--transition);
+        }
+
+        .hamburger.active .bar:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
+        }
+
+        .hamburger.active .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active .bar:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .side-nav {
+                display: block;
+            }
+
+            body.side-nav-open {
+                overflow: hidden;
+            }
+        }
+
+        /* Section Styles */
+        .section {
+            display: none;
+            padding: 2rem 5%;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Home Section */
+        #home {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e3eeff 100%);
+            min-height: calc(100vh - 70px);
+        }
+
+        .hero {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5rem 0;
+            gap: 2rem;
+        }
+
+        .hero-content {
+            flex: 2;
+            text-align: left;
+        }
+
+        .hero-logo {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-img {
+            width: 180px;
+            height: 180px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .hero-content h1 {
+            font-size: 3.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            color: var(--text-color);
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column-reverse;
+                padding: 3rem 1rem;
+            }
+            
+            .hero-content {
+                text-align: center;
+            }
+        }
+
+        /* Features Section */
+        .features {
+            padding: 5rem 5%;
+            text-align: center;
+            background-color: var(--card-bg);
+        }
+
+        .features h2 {
+            font-size: 2.2rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .feature-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 5rem 5%;
+            background: linear-gradient(135deg, #f5f7ff 0%, #e3eeff 100%);
+            text-align: center;
+        }
+
+        .testimonial {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Call to Action */
+        .cta {
+            padding: 5rem 5%;
+            text-align: center;
+            background-color: var(--primary-color);
+            color: var(--light-text);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: var(--light-text);
+            padding: 3rem 5% 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 2rem;
+        }
+
+        /* Resources Section */
+        #resources {
+            background-color: var(--background-color);
+            min-height: calc(100vh - 70px);
+            padding: 2rem 5%;
+            padding-top: 80px;
+        }
+
+        .resources-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .resources-container h2 {
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            color: var(--text-color);
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 30px;
+            margin-top: 2rem;
+        }
+
+        .categories {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            height: fit-content;
+        }
+
+        .categories h3 {
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .category-list {
+            list-style: none;
+        }
+
+        .category-list li {
+            margin-bottom: 10px;
+        }
+
+        .category-list a {
+            display: block;
+            padding: 8px 10px;
+            text-decoration: none;
+            color: var(--text-color);
+            border-radius: 5px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .category-list a:hover {
+            background-color: var(--hover-color);
+            color: var(--primary-color);
+        }
+
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .note-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .note-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .note-header {
+            padding: 1rem;
+            background-color: var(--primary-color);
+            color: var(--light-text);
+        }
+
+        .note-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .note-body {
+            padding: 1rem;
+        }
+
+        .note-body p {
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .note-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .note-meta small {
+            display: block;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+        }
+
+        .modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        /* Resources Section Styles */
+        .resources-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .notes-container {
+            flex: 1;
+        }
+
+        .notes-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-box input {
+            padding: 8px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            width: 250px;
+            font-size: 1rem;
+        }
+
+        .sort-options select {
+            padding: 8px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 1rem;
+            background-color: var(--card-bg);
+        }
+
+        .note-category {
+            display: inline-block;
+            padding: 3px 8px;
+            background-color: var(--accent-color);
+            color: var(--light-text);
+            border-radius: 3px;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+
+        .note-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: var(--light-text);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary-color);
+        }
+
+        /* Additional Resources Section Styles */
+        .note-viewer {
+            margin-top: 20px;
+        }
+
+        .note-preview {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+        }
+
+        .note-meta {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* Improved responsive styles for resources section */
+        @media (max-width: 768px) {
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .categories {
+                margin-bottom: 2rem;
+            }
+            
+            .notes-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .resources-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .notes-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .search-box input {
+                width: 100%;
+            }
+            
+            .sort-options select {
+                width: 100%;
+            }
+            
+            #resources {
+                padding-top: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <h1>EduLearn</h1>
+        </div>
+        <ul class="nav-links">
+            <li><a onclick="showSection('home')" class="active">Home</a></li>
+            <li><a onclick="showSection('resources')">Resources</a></li>
+            <li><a onclick="showModal('login')">Login</a></li>
+            <li><a onclick="showModal('signup')">Sign Up</a></li>
+        </ul>
+        <div class="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+    </nav>
+
+    <!-- Add this after the navbar -->
+    <div class="side-nav">
+        <div class="side-nav-header">
+            <h2>EduLearn</h2>
+            <button class="close-nav" onclick="toggleSideNav()">&times;</button>
+        </div>
+        <ul class="side-nav-links">
+            <li><a onclick="showSection('home'); toggleSideNav();" class="active">Home</a></li>
+            <li><a onclick="showSection('resources'); toggleSideNav();">Resources</a></li>
+            <li><a onclick="showModal('login'); toggleSideNav();">Login</a></li>
+            <li><a onclick="showModal('signup'); toggleSideNav();">Sign Up</a></li>
+        </ul>
+    </div>
+    <div class="overlay" onclick="toggleSideNav()"></div>
+
+    <!-- Home Section -->
+    <section id="home" class="section active">
+        <div class="hero">
+            <div class="hero-content">
+                <h1>Welcome to Your Learning Journey</h1>
+                <p>Access resources, track progress, and connect with fellow students all in one place.</p>
+                <button class="btn btn-primary" onclick="showModal('signup')">Get Started</button>
+            </div>
+            <div class="hero-logo">
+                <img src="data:image/png;base64,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" alt="EduLearn Logo" class="logo-img">
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <section class="features">
+            <h2>Platform Features</h2>
+            <div class="feature-cards">
+                <div class="card">
+                    <div class="icon">📚</div>
+                    <h3>Course Management</h3>
+                    <p>Organize your courses and access study materials easily.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">📊</div>
+                    <h3>Progress Tracking</h3>
+                    <p>Monitor your academic progress with intuitive charts.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">📅</div>
+                    <h3>Schedule Planning</h3>
+                    <p>Never miss a deadline with our calendar system.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="testimonials">
+            <h2>What Students Say</h2>
+            <div class="testimonial">
+                <p>"This platform has revolutionized my study habits. I'm more organized and productive than ever!"</p>
+                <div class="student-info">
+                    <h4>Sarah Johnson</h4>
+                    <p>Computer Science Major</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="cta">
+            <h2>Ready to Enhance Your Learning Experience?</h2>
+            <p>Join thousands of students already using our platform.</p>
+            <button class="btn btn-primary" onclick="showModal('signup')">Sign Up Now</button>
+        </section>
+    </section>
+
+    <!-- Resources Section -->
+    <section id="resources" class="section">
+        <div class="resources-container">
+            <div class="resources-header">
+                <h2>Study Resources</h2>
+                <button class="btn btn-primary" onclick="showModal('upload')">
+                    <i class="fas fa-upload"></i> Upload Notes
+                </button>
+            </div>
+            <div class="resources-grid">
+                <div class="categories">
+                    <h3>Categories</h3>
+                    <ul class="category-list">
+                        <li><a onclick="filterNotes('all', event)" class="active">All Notes</a></li>
+                        <li><a onclick="filterNotes('mathematics', event)">Mathematics</a></li>
+                        <li><a onclick="filterNotes('science', event)">Science</a></li>
+                        <li><a onclick="filterNotes('history', event)">History</a></li>
+                        <li><a onclick="filterNotes('literature', event)">Literature</a></li>
+                        <li><a onclick="filterNotes('computer-science', event)">Computer Science</a></li>
+                    </ul>
+                </div>
+                <div class="notes-container">
+                    <div class="notes-header">
+                        <div class="search-box">
+                            <input type="text" id="searchNotes" placeholder="Search notes..." onkeyup="searchNotes()">
+                        </div>
+                        <div class="sort-options">
+                            <select id="sortNotes" onchange="sortNotes()">
+                                <option value="newest">Newest First</option>
+                                <option value="oldest">Oldest First</option>
+                                <option value="title">Title A-Z</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="notes-grid" id="notesGrid">
+                        <!-- Sample Notes -->
+                        <div class="note-card" data-category="mathematics">
+                            <div class="note-header">
+                                <h3>Calculus Basics</h3>
+                                <span class="note-category">Mathematics</span>
+                            </div>
+                            <div class="note-body">
+                                <p>Comprehensive notes covering basic calculus concepts including limits, derivatives, and integrals.</p>
+                                <div class="note-meta">
+                                    <small>Uploaded by: Math Professor</small>
+                                    <small>Date: 04/08/2023</small>
+                                </div>
+                                <div class="note-actions">
+                                    <button class="btn btn-primary" onclick="viewNote('calculus-basics', 'sample-resources/calculus_basics.pdf')">View</button>
+                                    <button class="btn btn-secondary" onclick="downloadNote('calculus-basics', 'sample-resources/calculus_basics.pdf')">Download</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="note-card" data-category="science">
+                            <div class="note-header">
+                                <h3>Quantum Physics</h3>
+                                <span class="note-category">Science</span>
+                            </div>
+                            <div class="note-body">
+                                <p>A comprehensive overview of key quantum physics concepts including wave-particle duality, uncertainty principle, and quantum entanglement.</p>
+                                <div class="note-meta">
+                                    <small>Uploaded by: Physics Teacher</small>
+                                    <small>Date: 04/08/2023</small>
+                                </div>
+                                <div class="note-actions">
+                                    <button class="btn btn-primary" onclick="viewNote('quantum-physics', 'sample-resources/quantum_physics.pdf')">View</button>
+                                    <button class="btn btn-secondary" onclick="downloadNote('quantum-physics', 'sample-resources/quantum_physics.pdf')">Download</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="note-card" data-category="science">
+                            <div class="note-header">
+                                <h3>Thermodynamics</h3>
+                                <span class="note-category">Science</span>
+                            </div>
+                            <div class="note-body">
+                                <p>Detailed explanation of the four laws of thermodynamics and their applications in various fields of science and engineering.</p>
+                                <div class="note-meta">
+                                    <small>Uploaded by: Physics Teacher</small>
+                                    <small>Date: 04/08/2023</small>
+                                </div>
+                                <div class="note-actions">
+                                    <button class="btn btn-primary" onclick="viewNote('thermodynamics', 'sample-resources/thermodynamics.pdf')">View</button>
+                                    <button class="btn btn-secondary" onclick="downloadNote('thermodynamics', 'sample-resources/thermodynamics.pdf')">Download</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <h2>EduLearn</h2>
+                <p>Your Academic Success Partner</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#home">About Us</a></li>
+                    <li><a href="#resources">Resources</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Contact Support</a></li>
+                </ul>
+            </div>
+            <div class="footer-newsletter">
+                <h3>Stay Updated</h3>
+                <p>Subscribe to our newsletter for updates.</p>
+                <form id="newsletterForm" onsubmit="handleNewsletter(event)">
+                    <input type="email" placeholder="Enter your email" required>
+                    <button type="submit" class="btn btn-primary">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 EduLearn Student Platform. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="hideModal('login')">&times;</span>
+            <h2>Login</h2>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="hideModal('signup')">&times;</span>
+            <h2>Sign Up</h2>
+            <form id="signupForm" onsubmit="handleSignup(event)">
+                <div class="form-group">
+                    <label for="signupName">Name</label>
+                    <input type="text" id="signupName" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Upload Modal -->
+    <div id="uploadModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="hideModal('upload')">&times;</span>
+            <h2>Upload Notes</h2>
+            <form id="uploadForm" onsubmit="handleUpload(event)">
+                <div class="form-group">
+                    <label for="noteTitle">Title</label>
+                    <input type="text" id="noteTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="noteCategory">Category</label>
+                    <select id="noteCategory" required>
+                        <option value="mathematics">Mathematics</option>
+                        <option value="science">Science</option>
+                        <option value="history">History</option>
+                        <option value="literature">Literature</option>
+                        <option value="computer-science">Computer Science</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="noteDescription">Description</label>
+                    <textarea id="noteDescription" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="noteFile">File</label>
+                    <input type="file" id="noteFile" accept=".pdf,.doc,.docx,.txt" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Navigation Functions
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            
+            document.querySelectorAll('.nav-links a, .side-nav-links a').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`[onclick*="showSection('${sectionId}')"]`).classList.add('active');
+        }
+
+        // Modal Functions
+        function showModal(modalType) {
+            const modal = document.getElementById(`${modalType}Modal`);
+            modal.classList.add('active');
+        }
+
+        function hideModal(modalType) {
+            const modal = document.getElementById(`${modalType}Modal`);
+            modal.classList.remove('active');
+        }
+
+        // Form Handlers
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Add login logic here
+            console.log('Login:', { email, password });
+            hideModal('login');
+            alert('Login successful!');
+        }
+
+        function handleSignup(event) {
+            event.preventDefault();
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            
+            // Add signup logic here
+            console.log('Signup:', { name, email, password });
+            hideModal('signup');
+            alert('Signup successful!');
+        }
+
+        function handleUpload(event) {
+            event.preventDefault();
+            const title = document.getElementById('noteTitle').value;
+            const category = document.getElementById('noteCategory').value;
+            const description = document.getElementById('noteDescription').value;
+            const file = document.getElementById('noteFile').files[0];
+            
+            // Add upload logic here
+            console.log('Upload:', { title, category, description, file });
+            hideModal('upload');
+            
+            // Create a more realistic filename for simulation
+            const filename = title.toLowerCase().replace(/\s+/g, '_') + '.pdf';
+            
+            // Add note card to grid with new functionality
+            addNoteCard({
+                title,
+                category,
+                description,
+                filename,
+                uploadedBy: 'Current User',
+                date: new Date().toLocaleDateString()
+            });
+            
+            // Show success message
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.right = '20px';
+            notification.style.backgroundColor = '#4CAF50';
+            notification.style.color = 'white';
+            notification.style.padding = '15px 20px';
+            notification.style.borderRadius = '5px';
+            notification.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
+            notification.style.zIndex = '9999';
+            
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div>
+                        <strong>Success!</strong> "${title}" has been uploaded.
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" style="background: none; border: none; color: white; cursor: pointer; font-size: 1.2rem;">&times;</button>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Auto-remove notification after 5 seconds
+            setTimeout(() => {
+                if (document.body.contains(notification)) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+
+        // Notes Functions
+        function addNoteCard(note) {
+            const noteCard = document.createElement('div');
+            noteCard.className = 'note-card';
+            noteCard.dataset.category = note.category;
+            
+            const categoryName = note.category.charAt(0).toUpperCase() + note.category.slice(1).replace('-', ' ');
+            
+            noteCard.innerHTML = `
+                <div class="note-header">
+                    <h3>${note.title}</h3>
+                    <span class="note-category">${categoryName}</span>
+                </div>
+                <div class="note-body">
+                    <p>${note.description}</p>
+                    <div class="note-meta">
+                        <small>Uploaded by: ${note.uploadedBy}</small>
+                        <small>Date: ${note.date}</small>
+                    </div>
+                    <div class="note-actions">
+                        <button class="btn btn-primary" onclick="viewNote('${note.title.toLowerCase().replace(/\s+/g, '-')}', '${note.filename}')">View</button>
+                        <button class="btn btn-secondary" onclick="downloadNote('${note.title.toLowerCase().replace(/\s+/g, '-')}', '${note.filename}')">Download</button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('notesGrid').appendChild(noteCard);
+            
+            // Reapply filter if one is active
+            const activeCategory = document.querySelector('.category-list a.active');
+            if (activeCategory) {
+                const category = activeCategory.textContent.toLowerCase() === 'all notes' ? 'all' : activeCategory.textContent.toLowerCase().replace(/\s+/g, '-');
+                filterNotes(category);
+            }
+        }
+
+        function filterNotes(category, event) {
+            const notes = document.querySelectorAll('.note-card');
+            const categoryLinks = document.querySelectorAll('.category-list a');
+            
+            categoryLinks.forEach(link => link.classList.remove('active'));
+            
+            if (event && event.target) {
+                event.target.classList.add('active');
+            } else {
+                document.querySelector(`.category-list a[onclick*="filterNotes('${category}')"]`).classList.add('active');
+            }
+            
+            notes.forEach(note => {
+                if (category === 'all' || note.dataset.category === category) {
+                    note.style.display = 'block';
+                } else {
+                    note.style.display = 'none';
+                }
+            });
+        }
+
+        function downloadNote(title, filename) {
+            // Check if it's one of our sample PDFs
+            const isSampleResource = filename && filename.startsWith('sample-resources/');
+            
+            // Create a notification with better feedback
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.right = '20px';
+            notification.style.backgroundColor = 'var(--primary-color)';
+            notification.style.color = 'white';
+            notification.style.padding = '15px 20px';
+            notification.style.borderRadius = '5px';
+            notification.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
+            notification.style.zIndex = '9999';
+            notification.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+            notification.style.transform = 'translateY(100px)';
+            notification.style.opacity = '0';
+            
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div>
+                        <strong>Downloading:</strong> ${title.replace(/-/g, ' ')}
+                        <div style="height: 5px; width: 100%; background-color: rgba(255,255,255,0.3); margin-top: 5px; border-radius: 3px;">
+                            <div class="progress-bar" style="height: 100%; width: 0%; background-color: white; border-radius: 3px;"></div>
+                        </div>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" style="background: none; border: none; color: white; cursor: pointer; font-size: 1.2rem;">&times;</button>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Animate the notification appearance
+            setTimeout(() => {
+                notification.style.transform = 'translateY(0)';
+                notification.style.opacity = '1';
+            }, 10);
+            
+            // Animate progress bar
+            const progressBar = notification.querySelector('.progress-bar');
+            
+            let width = 0;
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    
+                    // If it's a sample resource, actually download it
+                    if (isSampleResource) {
+                        const a = document.createElement('a');
+                        a.href = filename;
+                        a.download = filename.split('/').pop();
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                    }
+                    
+                    // Show download complete
+                    notification.querySelector('div > div > strong').textContent = 'Download Complete:';
+                    
+                    // Remove notification after 3 seconds
+                    setTimeout(() => {
+                        if (document.body.contains(notification)) {
+                            notification.style.transform = 'translateY(100px)';
+                            notification.style.opacity = '0';
+                            
+                            setTimeout(() => {
+                                if (document.body.contains(notification)) {
+                                    notification.remove();
+                                }
+                            }, 300);
+                        }
+                    }, 3000);
+                } else {
+                    width += 5;
+                    progressBar.style.width = width + '%';
+                }
+            }, 50);
+        }
+
+        function searchNotes() {
+            const searchTerm = document.getElementById('searchNotes').value.toLowerCase();
+            const notes = document.querySelectorAll('.note-card');
+            
+            notes.forEach(note => {
+                const title = note.querySelector('h3').textContent.toLowerCase();
+                const description = note.querySelector('p').textContent.toLowerCase();
+                const category = note.dataset.category.toLowerCase();
+                
+                if (title.includes(searchTerm) || description.includes(searchTerm) || category.includes(searchTerm)) {
+                    note.style.display = 'block';
+                } else {
+                    note.style.display = 'none';
+                }
+            });
+        }
+
+        function sortNotes() {
+            const sortBy = document.getElementById('sortNotes').value;
+            const notesGrid = document.getElementById('notesGrid');
+            const notes = Array.from(notesGrid.children);
+            
+            notes.sort((a, b) => {
+                const titleA = a.querySelector('h3').textContent;
+                const titleB = b.querySelector('h3').textContent;
+                const dateA = new Date(a.querySelector('.note-meta small:last-child').textContent.replace('Date: ', ''));
+                const dateB = new Date(b.querySelector('.note-meta small:last-child').textContent.replace('Date: ', ''));
+                
+                switch(sortBy) {
+                    case 'newest':
+                        return dateB - dateA;
+                    case 'oldest':
+                        return dateA - dateB;
+                    case 'title':
+                        return titleA.localeCompare(titleB);
+                    default:
+                        return 0;
+                }
+            });
+            
+            notesGrid.innerHTML = '';
+            notes.forEach(note => notesGrid.appendChild(note));
+        }
+
+        function viewNote(noteId, filename) {
+            // Check if it's one of our sample PDFs
+            const isSampleResource = filename && filename.startsWith('sample-resources/');
+            
+            const modal = document.createElement('div');
+            modal.className = 'modal active';
+            
+            if (isSampleResource) {
+                // For sample PDFs, embed the PDF directly
+                modal.innerHTML = `
+                    <div class="modal-content" style="width: 90%; max-width: 900px; height: 80vh;">
+                        <span class="close-modal" onclick="this.parentElement.parentElement.remove()">&times;</span>
+                        <h2>${noteId.replace(/-/g, ' ')}</h2>
+                        <div class="note-viewer" style="height: calc(100% - 60px);">
+                            <embed src="${filename}" type="application/pdf" width="100%" height="100%" />
+                            <div class="modal-buttons" style="margin-top: 10px; text-align: right;">
+                                <button class="btn btn-primary" onclick="downloadNote('${noteId}', '${filename}')">Download</button>
+                                <button class="btn btn-secondary" onclick="this.parentElement.parentElement.parentElement.parentElement.remove()">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // For other notes without actual files
+                modal.innerHTML = `
+                    <div class="modal-content">
+                        <span class="close-modal" onclick="this.parentElement.parentElement.remove()">&times;</span>
+                        <h2>Viewing Note</h2>
+                        <div class="note-viewer">
+                            <h3>${noteId.replace(/-/g, ' ')}</h3>
+                            <div class="note-preview">
+                                <p>This is a simulation. In a real application, the actual file content would be displayed here.</p>
+                            </div>
+                            <button class="btn btn-primary" onclick="downloadNote('${noteId}', '${filename}')">Download</button>
+                            <button class="btn btn-secondary" onclick="this.parentElement.parentElement.parentElement.remove()">Close</button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            document.body.appendChild(modal);
+        }
+
+        // Mobile Menu
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                hamburger.classList.remove('active');
+            });
+        });
+
+        // Close modals when clicking outside
+        window.addEventListener('click', (event) => {
+            document.querySelectorAll('.modal').forEach(modal => {
+                if (event.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        });
+
+        // Newsletter Handler
+        function handleNewsletter(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input[type="email"]').value;
+            console.log('Newsletter subscription:', email);
+            alert('Thanks for subscribing to our newsletter!');
+            event.target.reset();
+        }
+
+        // Add these new functions to your existing JavaScript
+        function toggleSideNav() {
+            const sideNav = document.querySelector('.side-nav');
+            const overlay = document.querySelector('.overlay');
+            const hamburger = document.querySelector('.hamburger');
+            const body = document.body;
+            
+            sideNav.classList.toggle('active');
+            overlay.classList.toggle('active');
+            hamburger.classList.toggle('active');
+            body.classList.toggle('side-nav-open');
+        }
+
+        // Update the hamburger click event
+        hamburger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleSideNav();
+        });
+    </script>
+</body>
+</html> 
